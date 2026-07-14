@@ -1,0 +1,34 @@
+# MySQL Connection
+spring.datasource.url=jdbc:mysql://localhost:3306/job_tracker
+spring.datasource.username=your_mysql_username
+spring.datasource.password=your_mysql_password
+
+# JPA
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
+
+# Server
+server.port=8080
+
+# JWT
+jwt.secret=your_jwt_secret_key
+jwt.expiration=86400000
+
+# Gemini
+gemini.api-key=your_gemini_api_key
+
+# Jackson
+spring.jackson.serialization.write-dates-as-timestamps=false
+
+# Mail (Mailtrap)
+spring.mail.host=sandbox.smtp.mailtrap.io
+spring.mail.port=2525
+spring.mail.username=your_mailtrap_username
+spring.mail.password=your_mailtrap_password
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+
+# Multipart
+spring.servlet.multipart.max-file-size=10MB
+spring.servlet.multipart.max-request-size=10MB
