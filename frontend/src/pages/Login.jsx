@@ -61,7 +61,7 @@ export default function Login() {
           </div>
 
           <h2>Welcome back</h2>
-          <p className="auth-sub">Sign in to continue tracking your applications.</p>
+          <p className="auth-sub">Sign in to continue your job search journey.</p>
 
           {error && <div className="alert alert-error" style={{ marginBottom: '1.25rem' }}>{error}</div>}
 
