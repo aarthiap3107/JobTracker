@@ -1,15 +1,27 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import api from '../api/axios'
 import { useAuth } from '../context/AuthContext'
 import { BriefcaseIcon } from '../components/Icons'
 
 export default function Login() {
-  const [form,    setForm]    = useState({ email: '', password: '' })
-  const [error,   setError]   = useState('')
-  const [loading, setLoading] = useState(false)
+  const [form,       setForm]       = useState({ email: '', password: '' })
+  const [error,      setError]      = useState('')
+  const [loading,    setLoading]    = useState(false)
+  const [serverWarm, setServerWarm] = useState(true)
   const { login } = useAuth()
   const navigate   = useNavigate()
+
+  useEffect(() => {
+    // Ping backend; if it takes >2s the server is still waking up — show a notice
+    const timer = setTimeout(() => setServerWarm(false), 2000)
+    const base = import.meta.env.VITE_API_URL || 'http://localhost:8080'
+    fetch(`${base}/api/health`)
+      .then(() => setServerWarm(true))
+      .catch(() => setServerWarm(true))
+      .finally(() => clearTimeout(timer))
+    return () => clearTimeout(timer)
+  }, [])
 
   function handleChange(e) {
     setForm({ ...form, [e.target.name]: e.target.value })
@@ -62,6 +74,24 @@ export default function Login() {
 
           <h2>Welcome back</h2>
           <p className="auth-sub">Sign in to continue your job search journey.</p>
+
+          {!serverWarm && (
+            <div className="alert" style={{
+              marginBottom: '1.25rem',
+              background: '#fffbeb',
+              border: '1px solid #f59e0b',
+              color: '#92400e',
+              borderRadius: 8,
+              padding: '0.75rem 1rem',
+              fontSize: '0.85rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem'
+            }}>
+              <span style={{ fontSize: '1rem' }}>⏳</span>
+              Server is starting up — this may take up to 60 seconds on first load.
+            </div>
+          )}
 
           {error && <div className="alert alert-error" style={{ marginBottom: '1.25rem' }}>{error}</div>}
 
